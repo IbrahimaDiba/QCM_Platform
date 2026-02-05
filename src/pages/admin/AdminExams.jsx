@@ -65,13 +65,81 @@ export default function AdminExams() {
         <div>
             <h1 className="t-h2" style={{ marginBottom: '2rem' }}>Gestion des Examens</h1>
 
-            <div style={{ display: 'grid', gap: '1rem' }}>
+            <style>{`
+                .exams-grid {
+                    display: grid;
+                    gap: 1rem;
+                }
+
+                .exam-card-content {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    gap: 1rem;
+                }
+
+                .exam-info {
+                    flex: 1;
+                }
+
+                .exam-title {
+                    font-weight: 600;
+                    font-size: 1.125rem;
+                    margin-bottom: 0.25rem;
+                }
+
+                .exam-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    color: var(--color-text-muted);
+                    font-size: 0.875rem;
+                    flex-wrap: wrap;
+                }
+
+                .exam-status {
+                    display: flex;
+                    gap: 0.5rem;
+                    flex-shrink: 0;
+                }
+
+                .exam-actions {
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 0.5rem;
+                    border-top: 1px solid var(--color-border);
+                    padding-top: 1rem;
+                    margin-top: auto;
+                }
+
+                @media (max-width: 640px) {
+                    .exam-card-content {
+                        flex-direction: column;
+                        align-items: stretch;
+                    }
+
+                    .exam-status {
+                        align-self: flex-start;
+                        margin-bottom: 0.5rem;
+                    }
+                    
+                    .exam-actions {
+                        justify-content: stretch;
+                    }
+                    
+                    .exam-actions > * {
+                        flex: 1;
+                    }
+                }
+            `}</style>
+
+            <div className="exams-grid">
                 {quizzes.map((quiz) => (
-                    <Card key={quiz.id} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <div>
-                                <h3 style={{ fontWeight: 600, fontSize: '1.125rem', marginBottom: '0.25rem' }}>{quiz.title}</h3>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
+                    <Card key={quiz.id} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', height: '100%' }}>
+                        <div className="exam-card-content">
+                            <div className="exam-info">
+                                <h3 className="exam-title">{quiz.title}</h3>
+                                <div className="exam-meta">
                                     <UserRound size={14} />
                                     <span>{quiz.profiles?.full_name || 'Professeur inconnu'}</span>
                                     <span>•</span>
@@ -82,7 +150,7 @@ export default function AdminExams() {
                                     <span>{quiz.questions?.[0]?.count || 0} Questions</span>
                                 </div>
                             </div>
-                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <div className="exam-status">
                                 <span style={{
                                     padding: '0.25rem 0.5rem',
                                     borderRadius: '9999px',
@@ -96,7 +164,7 @@ export default function AdminExams() {
                             </div>
                         </div>
 
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
+                        <div className="exam-actions">
                             <Button
                                 variant="ghost"
                                 size="sm"

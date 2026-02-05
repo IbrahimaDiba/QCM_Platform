@@ -269,35 +269,74 @@ export default function QuizTaker() {
                     accent-color: #667eea;
                 }
                 
+                .quiz-footer {
+                    margin-top: 3rem;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    gap: 1rem;
+                    padding: 1.5rem;
+                    border-radius: var(--radius-xl);
+                    transition: all 0.3s ease;
+                }
+
                 @media (max-width: 768px) {
                     .quiz-taker-container {
                         padding: 0.75rem;
                     }
                     
                     .quiz-header {
-                        padding: 1.25rem;
-                        top: 0.5rem;
+                        padding: 1rem;
+                        top: 0;
+                        border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+                        margin-left: -0.75rem;
+                        margin-right: -0.75rem;
+                        width: calc(100% + 1.5rem);
+                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
                     }
                     
                     .quiz-header-content {
-                        gap: 1rem;
+                        gap: 0.75rem;
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+
+                    .quiz-header-content > div {
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
                     }
                     
                     .quiz-header h1 {
                         font-size: 1.25rem;
+                        margin-bottom: 0;
                     }
                     
                     .quiz-timer {
-                        font-size: 1.125rem;
-                        padding: 0.625rem 1rem;
+                        font-size: 1rem;
+                        padding: 0.5rem 0.75rem;
                     }
                     
                     .question-card {
-                        padding: 1.5rem;
+                        padding: 1.25rem;
                     }
                     
                     .option-label {
-                        padding: 1rem;
+                        padding: 0.75rem;
+                    }
+
+                    .quiz-footer {
+                        flex-direction: column;
+                        align-items: stretch;
+                        gap: 1.5rem;
+                        text-align: center;
+                    }
+
+                    .quiz-footer button {
+                        width: 100%;
+                        justify-content: center;
                     }
                 }
                 
@@ -319,7 +358,7 @@ export default function QuizTaker() {
                             <h1 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '0.5rem' }}>
                                 {quiz.title}
                             </h1>
-                            <p style={{ fontSize: '1rem', opacity: 0.95 }}>
+                            <p style={{ fontSize: '1rem', opacity: 0.95 }} className="hide-mobile">
                                 {quiz.description || 'Répondez à toutes les questions'}
                             </p>
                         </div>
@@ -413,18 +452,13 @@ export default function QuizTaker() {
                 </div>
 
                 {/* Submit Button */}
-                <div style={{
-                    marginTop: '3rem',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexWrap: 'wrap',
-                    gap: '1rem',
-                    padding: '1.5rem',
-                    background: isComplete ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)' : '#F9FAFB',
-                    borderRadius: 'var(--radius-xl)',
-                    border: `2px solid ${isComplete ? '#667eea' : 'var(--color-border)'}`
-                }}>
+                <div
+                    className="quiz-footer"
+                    style={{
+                        background: isComplete ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)' : '#F9FAFB',
+                        border: `2px solid ${isComplete ? '#667eea' : 'var(--color-border)'}`
+                    }}
+                >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                         {isComplete ? (
                             <>

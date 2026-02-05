@@ -35,8 +35,50 @@ export default function QuizResult() {
     }
 
     return (
-        <div style={{ maxWidth: '800px', margin: '4rem auto', paddingBottom: '4rem' }}>
-            <Card style={{ padding: '3rem', textAlign: 'center', marginBottom: '3rem' }}>
+        <div className="quiz-result-container">
+            <style>{`
+                .quiz-result-container {
+                    max-width: 800px;
+                    margin: 4rem auto;
+                    padding: 0 1rem 4rem 1rem;
+                }
+
+                .result-card {
+                    padding: 3rem;
+                    text-align: center;
+                    margin-bottom: 3rem;
+                }
+
+                .correction-card {
+                    padding: 1.5rem;
+                }
+
+                @media (max-width: 768px) {
+                    .quiz-result-container {
+                        margin: 2rem auto;
+                        padding-bottom: 2rem;
+                    }
+
+                    .result-card {
+                        padding: 1.5rem;
+                        margin-bottom: 2rem;
+                    }
+
+                    .result-card h1 {
+                        font-size: 1.5rem !important;
+                    }
+
+                    .result-card div[style*="fontSize: 3rem"] {
+                        font-size: 2.25rem !important;
+                    }
+
+                    .correction-card {
+                        padding: 1rem;
+                    }
+                }
+            `}</style>
+
+            <Card className="result-card">
                 <div style={{
                     width: '80px', height: '80px',
                     borderRadius: '50%',
@@ -64,7 +106,6 @@ export default function QuizResult() {
                         <Home size={18} style={{ marginRight: '0.5rem' }} />
                         Accueil
                     </Button>
-                    {/*Removed "Autre examen" button because navigation is usually from dashboard*/}
                 </div>
             </Card>
 
@@ -79,9 +120,8 @@ export default function QuizResult() {
                         const isCorrect = selectedOption?.id === correctOption?.id;
 
                         return (
-                            <Card key={q.id} style={{
-                                borderLeft: `4px solid ${isCorrect ? 'var(--color-success)' : 'var(--color-danger)'}`,
-                                padding: '1.5rem'
+                            <Card key={q.id} className="correction-card" style={{
+                                borderLeft: `4px solid ${isCorrect ? 'var(--color-success)' : 'var(--color-danger)'}`
                             }}>
                                 <h3 style={{ fontWeight: 600, fontSize: '1.125rem', marginBottom: '1rem', display: 'flex', gap: '0.75rem' }}>
                                     <span style={{ color: isCorrect ? 'var(--color-success)' : 'var(--color-danger)' }}>

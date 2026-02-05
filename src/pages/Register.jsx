@@ -318,17 +318,7 @@ export default function Register() {
                                 />
                                 <span>Professeur</span>
                             </label>
-                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                                <input
-                                    type="radio"
-                                    name="role"
-                                    value="admin"
-                                    checked={formData.role === 'admin'}
-                                    onChange={handleChange}
-                                    style={{ width: '1.25rem', height: '1.25rem' }}
-                                />
-                                <span>Admin</span>
-                            </label>
+
                         </div>
                     </div>
 

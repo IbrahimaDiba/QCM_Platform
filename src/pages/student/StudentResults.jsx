@@ -58,33 +58,80 @@ export default function StudentResults() {
 
     return (
         <div style={{ maxWidth: '1200px', margin: '0 auto', paddingBottom: '3rem' }}>
+            <style>{`
+                .results-header {
+                    margin-bottom: 3rem;
+                    background-color: #1E1B4B;
+                    border-radius: var(--radius-xl);
+                    padding: 3rem;
+                    color: white;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .stats-container {
+                    display: flex;
+                    gap: 2rem;
+                    marginTop: 3rem;
+                }
+
+                .stats-divider {
+                    width: 1px;
+                    background-color: #312E81;
+                }
+
+                .results-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                    gap: 2rem;
+                }
+
+                @media (max-width: 768px) {
+                    .results-header {
+                        padding: 1.5rem;
+                        margin-bottom: 2rem;
+                    }
+
+                    .stats-container {
+                        flex-direction: column;
+                        gap: 1.5rem;
+                        margin-top: 2rem;
+                    }
+
+                    .stats-divider {
+                        display: none;
+                    }
+
+                    .stats-container span:first-child {
+                        font-size: 2.5rem !important;
+                    }
+
+                    .results-grid {
+                        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                        gap: 1rem;
+                    }
+                }
+            `}</style>
+
             {/* Header Section */}
-            <div style={{
-                marginBottom: '3rem',
-                backgroundColor: '#1E1B4B',
-                borderRadius: 'var(--radius-xl)',
-                padding: '3rem',
-                color: 'white',
-                position: 'relative',
-                overflow: 'hidden'
-            }}>
+            <div className="results-header">
                 <div style={{ position: 'relative', zIndex: 10 }}>
                     <h1 className="t-h1" style={{ color: 'white', marginBottom: '0.5rem' }}>Mes Résultats</h1>
                     <p style={{ color: '#A5B4FC', fontSize: '1.125rem', maxWidth: '600px' }}>
                         Consultez l'historique de vos examens et suivez votre progression académique.
                     </p>
 
-                    <div style={{ display: 'flex', gap: '2rem', marginTop: '3rem' }}>
+                    <div className="stats-container">
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <span style={{ fontSize: '3rem', fontWeight: 800, lineHeight: 1 }}>{averageScore}%</span>
                             <span style={{ color: '#A5B4FC', fontSize: '0.875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '1px' }}>Moyenne</span>
                         </div>
-                        <div style={{ width: '1px', backgroundColor: '#312E81' }}></div>
+                        <div className="stats-divider"></div>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <span style={{ fontSize: '3rem', fontWeight: 800, lineHeight: 1 }}>{totalTests}</span>
                             <span style={{ color: '#A5B4FC', fontSize: '0.875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '1px' }}>Examens</span>
                         </div>
-                        <div style={{ width: '1px', backgroundColor: '#312E81' }}></div>
+                        <div className="stats-divider"></div>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <span style={{ fontSize: '3rem', fontWeight: 800, lineHeight: 1 }}>{successRate}%</span>
                             <span style={{ color: '#A5B4FC', fontSize: '0.875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '1px' }}>Réussite</span>
@@ -111,7 +158,7 @@ export default function StudentResults() {
             </h2>
 
             {results.length > 0 ? (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
+                <div className="results-grid">
                     {results.map((result) => (
                         <div key={result.id}
                             style={{
