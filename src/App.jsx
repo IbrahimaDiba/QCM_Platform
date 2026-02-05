@@ -26,6 +26,7 @@ import QuizTaker from './pages/student/QuizTaker';
 import QuizResult from './pages/student/QuizResult';
 import StudentResults from './pages/student/StudentResults';
 import StudentTeachers from './pages/student/StudentTeachers';
+import HelpCenter from './pages/HelpCenter';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
               <Route path="schools" element={<SchoolManagement />} />
               <Route path="exams" element={<AdminExams />} />
               <Route path="exams/:id" element={<QuizEditor />} />
+              <Route path="help" element={<HelpCenter />} />
             </Route>
           </Route>
 
@@ -55,6 +57,7 @@ function App() {
               <Route path="quizzes/:id/edit" element={<QuizEditor />} />
               <Route path="results" element={<TeacherResults />} />
               <Route path="results/:id" element={<TeacherResultDetail />} />
+              <Route path="help" element={<HelpCenter />} />
             </Route>
           </Route>
 
@@ -65,6 +68,7 @@ function App() {
               <Route path="quiz/:id" element={<QuizTaker />} />
               <Route path="result/:id" element={<QuizResult />} />
               <Route path="teachers" element={<StudentTeachers />} />
+              <Route path="help" element={<HelpCenter />} />
             </Route>
           </Route>
 

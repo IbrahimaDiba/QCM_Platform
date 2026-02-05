@@ -29,6 +29,13 @@ Vercel est la plateforme la plus simple pour les applications React/Vite.
     *   Ajoutez `VITE_SUPABASE_URL` avec votre URL Supabase.
     *   Ajoutez `VITE_SUPABASE_ANON_KEY` avec votre clé anonyme.
 6.  Cliquez sur **"Deploy"**.
+7.  **Important pour Vercel (Routing)** :
+    Pour éviter les erreurs 404 lors du rafraîchissement d'une page, assurez-vous que le fichier `vercel.json` est présent à la racine avec :
+    ```json
+    {
+      "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+    }
+    ```
 
 > [!TIP]
 > Vercel gérera automatiquement les mises à jour : chaque fois que vous ferez un `git push`, le site sera mis à jour.

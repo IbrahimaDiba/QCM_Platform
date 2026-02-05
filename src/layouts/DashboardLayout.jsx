@@ -15,17 +15,20 @@ export default function DashboardLayout({ role }) {
             { icon: ClipboardList, label: 'Résultats', path: '/admin/results' },
             { icon: FileText, label: 'Examens', path: '/admin/exams' },
             { icon: GraduationCap, label: 'Écoles', path: '/admin/schools' },
+            { icon: BookOpenCheck, label: 'Centre d\'Aide', path: '/admin/help' },
         ],
         teacher: [
             { icon: BarChart3, label: 'Tableau de bord', path: '/teacher' },
             { icon: GraduationCap, label: 'Mes Examens', path: '/teacher/quizzes' },
             { icon: ClipboardList, label: 'Résultats', path: '/teacher/results' },
             { icon: Settings, label: 'Paramètres', path: '/teacher/settings' },
+            { icon: BookOpenCheck, label: 'Centre d\'Aide', path: '/teacher/help' },
         ],
         student: [
             { icon: LayoutDashboard, label: 'Accueil', path: '/student' },
             { icon: Users, label: 'Mes Professeurs', path: '/student/teachers' },
             { icon: GraduationCap, label: 'Mes Résultats', path: '/student/results' },
+            { icon: BookOpenCheck, label: 'Centre d\'Aide', path: '/student/help' },
         ]
     };
 
