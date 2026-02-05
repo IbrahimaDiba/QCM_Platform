@@ -126,7 +126,6 @@ export default function TeacherOverview() {
                 totalScore: r.total_score,
                 percentage: r.percentage,
                 passed: r.passed,
-                passed: r.passed,
                 date: new Date(r.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }),
                 id: r.id
             })) || []);
