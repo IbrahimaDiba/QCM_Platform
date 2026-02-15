@@ -170,6 +170,22 @@ export default function TeacherResultDetail() {
                                 <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginTop: '0.25rem' }}>{q.text}</h3>
                             </div>
 
+                            {q.explanation && (
+                                <div style={{
+                                    marginBottom: '1rem',
+                                    padding: '0.75rem 1rem',
+                                    backgroundColor: '#F9FAFB',
+                                    border: '1px solid #E5E7EB',
+                                    borderRadius: 'var(--radius-md)',
+                                    color: 'var(--color-text-muted)',
+                                    fontSize: '0.9rem',
+                                    fontStyle: 'italic',
+                                    marginLeft: '3rem'
+                                }}>
+                                    <strong>Commentaire pédagogique :</strong> {q.explanation}
+                                </div>
+                            )}
+
                             <div className="question-card-content" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                 {q.quiz_options?.map((option, optIdx) => {
                                     const isSelected = userAnswers[q.id] === option.id;

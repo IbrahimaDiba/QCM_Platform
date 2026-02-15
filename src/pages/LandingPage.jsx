@@ -1,312 +1,394 @@
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import { useAuth } from '../contexts/AuthContext';
-import { GraduationCap, UserCheck, Timer, TrendingUp, Lock } from 'lucide-react';
-import { useEffect } from 'react';
+import { GraduationCap, UserCheck, Timer, TrendingUp, Lock, ArrowRight, CheckCircle, Users, FileCheck, School } from 'lucide-react';
 
 export default function LandingPage() {
     const navigate = useNavigate();
     const { user, isAuthenticated } = useAuth();
+    const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
         if (isAuthenticated && user?.role) {
             navigate(`/${user.role}`);
         }
+
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
     }, [isAuthenticated, user, navigate]);
 
     const features = [
         {
             icon: UserCheck,
             title: 'Gestion Multi-Rôles',
-            description: 'Interface dédiée pour Administrateurs, Enseignants et Étudiants avec permissions adaptées.'
+            description: 'Interface dédiée pour Administrateurs, Enseignants et Étudiants avec permissions adaptées.',
+            color: '#4F46E5',
+            bg: '#EEF2FF'
         },
         {
             icon: Timer,
             title: 'Examens Chronométrés',
-            description: 'Configurez des durées personnalisées pour chaque évaluation avec compte à rebours automatique.'
+            description: 'Configurez des durées précises avec compte à rebours automatique et fermeture programmée.',
+            color: '#0EA5E9',
+            bg: '#E0F2FE'
         },
         {
             icon: TrendingUp,
-            title: 'Analyse des Performances',
-            description: 'Tableaux de bord détaillés et statistiques en temps réel pour suivre la progression.'
+            title: 'Analyses Détaillées',
+            description: 'Suivez la progression avec des graphiques interactifs et des rapports de performance instantanés.',
+            color: '#8B5CF6',
+            bg: '#F3E8FF'
         },
         {
             icon: Lock,
-            title: 'Sécurité Renforcée',
-            description: 'Authentification robuste et contrôle d\'accès basé sur les rôles pour protéger vos données.'
+            title: 'Sécurité Avancée',
+            description: 'Protection des données et intégrité des examens garanties par des protocoles robustes.',
+            color: '#10B981',
+            bg: '#D1FAE5'
         }
     ];
 
+    const stats = [
+        { number: '10k+', label: 'Étudiants Actifs', icon: Users },
+        { number: '500+', label: 'Établissements', icon: School },
+        { number: '50k+', label: 'Quiz Créés', icon: FileCheck },
+        { number: '99%', label: 'Taux de Satisfaction', icon: CheckCircle }
+    ];
+
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: 'var(--color-background)' }}>
+        <div style={{ minHeight: '100vh', backgroundColor: '#F9FAFB', fontFamily: '"Inter", system-ui, -apple-system, sans-serif' }}>
             <style>{`
-                /* Global Landing Styles */
+                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+                :root {
+                    --primary: #4F46E5;
+                    --primary-dark: #4338CA;
+                    --secondary: #8B5CF6;
+                    --surface: #FFFFFF;
+                    --text-main: #111827;
+                    --text-muted: #6B7280;
+                }
+
                 .landing-header {
-                    padding: 1.5rem 2rem;
-                    border-bottom: 1px solid var(--color-border);
-                    background-color: var(--color-surface);
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    gap: 1rem;
                     position: sticky;
                     top: 0;
                     z-index: 50;
+                    transition: all 0.3s ease;
+                    padding: 1.25rem 2rem;
+                    background: transparent;
                 }
-                
-                .landing-header-logo {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.75rem;
+
+                .landing-header.scrolled {
+                    background: rgba(255, 255, 255, 0.8);
+                    backdrop-filter: blur(12px);
+                    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+                    padding: 1rem 2rem;
                 }
-                
-                .landing-header-buttons {
-                    display: flex;
-                    gap: 1rem;
-                }
-                
-                .landing-hero {
-                    padding: 8rem 2rem 6rem;
-                    text-align: center;
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    color: white;
+
+                .hero-section {
                     position: relative;
+                    padding: 8rem 2rem 6rem;
                     overflow: hidden;
+                    text-align: center;
                 }
-                
-                .landing-hero-container {
-                    max-width: 900px;
-                    margin: 0 auto;
+
+                /* Abstract Background Shapes */
+                .hero-bg-shape {
+                    position: absolute;
+                    border-radius: 50%;
+                    filter: blur(80px);
+                    opacity: 0.4;
+                    z-index: 0;
+                }
+
+                .shape-1 {
+                    top: -10%;
+                    left: -10%;
+                    width: 500px;
+                    height: 500px;
+                    background: #C7D2FE;
+                }
+
+                .shape-2 {
+                    bottom: 10%;
+                    right: -5%;
+                    width: 400px;
+                    height: 400px;
+                    background: #DDD6FE;
+                }
+
+                .hero-content {
                     position: relative;
                     z-index: 10;
+                    max-width: 1000px;
+                    margin: 0 auto;
                 }
-                
-                .landing-hero h1 {
-                    font-size: 3.5rem;
+
+                .hero-title {
+                    font-size: 4rem;
                     font-weight: 800;
-                    margin-bottom: 1.5rem;
                     line-height: 1.1;
                     letter-spacing: -0.02em;
+                    color: var(--text-main);
+                    margin-bottom: 1.5rem;
                 }
-                
-                .landing-hero p {
+
+                .gradient-text {
+                    background: linear-gradient(135deg, #4F46E5 0%, #8B5CF6 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                }
+
+                .hero-subtitle {
                     font-size: 1.25rem;
-                    margin-bottom: 3rem;
-                    opacity: 0.95;
+                    color: var(--text-muted);
                     line-height: 1.6;
+                    margin-bottom: 3rem;
                     max-width: 700px;
                     margin-left: auto;
                     margin-right: auto;
                 }
-                
-                .landing-hero-cta {
+
+                .hero-buttons {
                     display: flex;
                     gap: 1rem;
                     justify-content: center;
                     flex-wrap: wrap;
                 }
-                
-                .landing-features {
-                    padding: 6rem 2rem;
-                    background: var(--color-background);
+
+                .btn-glow {
+                    position: relative;
                 }
                 
-                .landing-features-container {
+                .btn-glow::after {
+                    content: '';
+                    position: absolute;
+                    top: -2px; left: -2px; right: -2px; bottom: -2px;
+                    background: linear-gradient(135deg, #4F46E5, #8B5CF6);
+                    z-index: -1;
+                    border-radius: 9999px;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+
+                .btn-glow:hover::after {
+                    opacity: 0.5;
+                    filter: blur(10px);
+                }
+
+                .stats-section {
+                    padding: 4rem 2rem;
+                    background: white;
+                    border-top: 1px solid #F3F4F6;
+                    border-bottom: 1px solid #F3F4F6;
+                }
+
+                .stats-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 2rem;
                     max-width: 1200px;
                     margin: 0 auto;
                 }
-                
-                .landing-features h2 {
-                    text-align: center;
-                    margin-bottom: 4rem;
-                    font-size: 2.5rem;
-                    font-weight: 800;
-                    color: var(--color-text);
+
+                .stat-card {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    padding: 1rem;
                 }
-                
-                .landing-features-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                    gap: 2.5rem;
-                }
-                
-                .landing-feature-card {
-                    text-align: center;
-                    padding: 2.5rem 2rem;
+
+                .feature-card {
                     background: white;
-                    border-radius: var(--radius-xl);
-                    border: 1px solid var(--color-border);
-                    cursor: default;
-                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    padding: 2.5rem;
+                    border-radius: 1.5rem;
+                    border: 1px solid #F3F4F6;
+                    transition: all 0.3s ease;
                 }
-                
-                .landing-feature-card:hover {
-                    transform: translateY(-5px);
+
+                .feature-card:hover {
+                    transform: translateY(-8px);
                     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-                    border-color: #667eea;
+                    border-color: #C7D2FE;
                 }
-                
-                .landing-footer {
-                    background-color: #1F2937;
-                    color: #D1D5DB;
-                    padding: 4rem 2rem 2rem;
+
+                .cta-section {
+                    padding: 6rem 2rem;
+                    background: linear-gradient(135deg, #111827 0%, #1F2937 100%);
+                    color: white;
+                    text-align: center;
+                    position: relative;
+                    overflow: hidden;
                 }
-                
+
                 /* Mobile Optimizations */
-                @media (max-width: 1024px) {
-                    .landing-hero { padding-top: 6rem; }
-                    .landing-hero h1 { font-size: 3rem; }
-                }
-                
                 @media (max-width: 768px) {
-                    .landing-header {
-                        padding: 1rem 1.25rem;
-                    }
-                    
-                    .landing-header-logo h1 {
-                        font-size: 1.25rem;
-                    }
-                    
-                    .landing-header-logo svg {
-                        width: 28px;
-                        height: 28px;
-                    }
-                    
-                    .landing-header-buttons {
-                        gap: 0.5rem;
-                    }
-                    
-                    .landing-hero {
-                        padding: 4rem 1.5rem;
-                    }
-                    
-                    .landing-hero h1 {
-                        font-size: 2.25rem;
-                    }
-                    
-                    .landing-hero p {
-                        font-size: 1.125rem;
-                        margin-bottom: 2rem;
-                    }
-                    
-                    .landing-features {
-                        padding: 4rem 1.5rem;
-                    }
-                    
-                    .landing-features h2 {
-                        font-size: 2rem;
-                        margin-bottom: 2.5rem;
-                    }
-                    
-                    .landing-features-grid {
-                        grid-template-columns: 1fr;
-                        gap: 1.5rem;
-                    }
-                    
-                    .landing-feature-card {
-                        padding: 2rem 1.5rem;
-                    }
-                }
-                
-                @media (max-width: 480px) {
-                    .landing-header {
-                        padding: 1rem;
-                    }
-                    
-                    .landing-header-buttons button {
-                        padding: 0.5rem 0.875rem;
-                        font-size: 0.875rem;
-                    }
-                    
-                    .landing-hero h1 {
-                        font-size: 1.875rem;
-                    }
-                    
-                    .landing-hero-cta button {
-                        width: 100%;
-                        max-width: 320px;
-                    }
-                    
-                    .landing-features {
-                        padding: 3rem 1rem;
-                    }
+                    .hero-title { font-size: 2.5rem; }
+                    .hero-section { padding: 6rem 1rem 4rem; }
+                    .landing-header { padding: 1rem; }
+                    .stats-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+                    .stat-card { flex-direction: column; text-align: center; }
                 }
             `}</style>
 
             {/* Header */}
-            <header className="landing-header">
-                <div className="landing-header-logo">
-                    <GraduationCap size={32} style={{ color: 'var(--color-primary)' }} />
-                    <h1 className="t-h2" style={{ color: 'var(--color-primary)', margin: 0 }}>QCM App</h1>
-                </div>
-                <div className="landing-header-buttons">
-                    <Button variant="outline" onClick={() => navigate('/login')}>
-                        Se connecter
-                    </Button>
-                    <Button onClick={() => navigate('/register')}>
-                        S'inscrire
-                    </Button>
+            <header className={`landing-header ${scrolled ? 'scrolled' : ''}`}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontWeight: 800, fontSize: '1.5rem', color: 'var(--text-main)' }}>
+                        <div style={{ padding: '0.5rem', background: 'linear-gradient(135deg, #4F46E5 0%, #8B5CF6 100%)', borderRadius: '12px', color: 'white', display: 'flex' }}>
+                            <GraduationCap size={24} />
+                        </div>
+                        <span>QCM App</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                        <Button
+                            variant="ghost"
+                            onClick={() => navigate('/login')}
+                            style={{ fontWeight: 600, color: 'white', backgroundColor: '#4F46E5', borderRadius: '9999px', padding: '0.625rem 1.5rem' }}
+                        >
+                            Se connecter
+                        </Button>
+                        <Button
+                            onClick={() => navigate('/register')}
+                            style={{
+                                background: 'var(--text-main)',
+                                color: 'white',
+                                borderRadius: '9999px',
+                                padding: '0.625rem 1.5rem',
+                                fontWeight: 600
+                            }}
+                        >
+                            S'inscrire
+                        </Button>
+                    </div>
                 </div>
             </header>
 
             {/* Hero Section */}
-            <section className="landing-hero">
-                <div className="landing-hero-container">
-                    <h1>
-                        Plateforme d'Examens en Ligne
+            <section className="hero-section">
+                <div className="hero-bg-shape shape-1" />
+                <div className="hero-bg-shape shape-2" />
+
+                <div className="hero-content">
+                    <div style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                        padding: '0.5rem 1rem', background: '#EEF2FF', color: '#4F46E5',
+                        borderRadius: '9999px', fontSize: '0.875rem', fontWeight: 600,
+                        marginBottom: '1.5rem', border: '1px solid #C7D2FE'
+                    }}>
+                        <span style={{ position: 'relative', display: 'flex', h: '8px', w: '8px' }}>
+                            <span style={{ animation: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite', position: 'absolute', height: '100%', width: '100%', borderRadius: '50%', background: '#4F46E5', opacity: 0.75 }}></span>
+                            <span style={{ position: 'relative', height: '8px', width: '8px', borderRadius: '50%', background: '#4F46E5' }}></span>
+                        </span>
+                        Nouvelle version disponible
+                    </div>
+
+                    <h1 className="hero-title">
+                        L'Excellence Académique <br />
+                        <span className="gradient-text">À Portée de Clic</span>
                     </h1>
-                    <p>
-                        Créez, gérez et passez des examens QCM facilement.
-                        Une solution complète pour les écoles modernes, conçue pour la réussite.
+
+                    <p className="hero-subtitle">
+                        Transformez l'évaluation avec notre plateforme intuitive.
+                        Créez des quiz engageants, suivez les progrès en temps réel et simplifiez la gestion des examens pour votre établissement.
                     </p>
-                    <div className="landing-hero-cta">
+
+                    <div className="hero-buttons">
                         <Button
-                            onClick={() => navigate('/login')}
+                            className="btn-glow"
+                            onClick={() => navigate('/register')}
                             style={{
-                                backgroundColor: 'white',
-                                color: 'var(--color-primary)',
+                                background: 'linear-gradient(135deg, #4F46E5 0%, #8B5CF6 100%)',
+                                color: 'white',
                                 padding: '1rem 2.5rem',
                                 fontSize: '1.125rem',
-                                fontWeight: 700,
-                                borderRadius: 'var(--radius-full)',
-                                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.2)'
+                                borderRadius: '9999px',
+                                fontWeight: 600,
+                                border: 'none',
+                                boxShadow: '0 10px 25px -5px rgba(79, 70, 229, 0.4)',
+                                display: 'flex', alignItems: 'center', gap: '0.5rem'
                             }}
                         >
-                            Commencer Maintenant
+                            Commencer Gratuitement
+                            <ArrowRight size={20} />
+                        </Button>
+                        <Button
+                            variant="secondary"
+                            onClick={() => navigate('/login')}
+                            style={{
+                                padding: '1rem 2.5rem',
+                                fontSize: '1.125rem',
+                                borderRadius: '9999px',
+                                fontWeight: 600,
+                                background: 'white',
+                                color: '#4B5563',
+                                border: '1px solid #E5E7EB',
+                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
+                            }}
+                        >
+                            Se connecter
                         </Button>
                     </div>
                 </div>
             </section>
 
-            {/* Features Section */}
-            <section className="landing-features">
-                <div className="landing-features-container">
-                    <h2>
-                        Fonctionnalités Principales
-                    </h2>
-                    <div className="landing-features-grid">
-                        {features.map((feature, index) => (
-                            <div
-                                key={index}
-                                className="landing-feature-card"
-                            >
-                                <div style={{
-                                    width: '64px',
-                                    height: '64px',
-                                    borderRadius: '50%',
-                                    backgroundColor: `${['#4F46E5', '#0EA5E9', '#10B981', '#F59E0B'][index]}15`,
-                                    color: ['#4F46E5', '#0EA5E9', '#10B981', '#F59E0B'][index],
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    margin: '0 auto 1.5rem auto'
-                                }}>
-                                    <feature.icon size={32} />
+            {/* Stats Section */}
+            <section className="stats-section">
+                <div className="stats-grid">
+                    {stats.map((stat, index) => (
+                        <div key={index} className="stat-card">
+                            <div style={{
+                                padding: '1rem', borderRadius: '12px',
+                                background: '#F3F4F6', color: '#4B5563'
+                            }}>
+                                <stat.icon size={24} />
+                            </div>
+                            <div style={{ textAlign: 'left' }}>
+                                <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', lineHeight: 1 }}>
+                                    {stat.number}
                                 </div>
-                                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.75rem', color: 'var(--color-text)' }}>
+                                <div style={{ fontSize: '0.875rem', color: '#6B7280', fontWeight: 500 }}>
+                                    {stat.label}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Features Section */}
+            <section style={{ padding: '8rem 2rem', background: '#fff' }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+                        <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#111827', marginBottom: '1rem' }}>
+                            Tout ce dont vous avez besoin
+                        </h2>
+                        <p style={{ fontSize: '1.125rem', color: '#6B7280', maxWidth: '600px', margin: '0 auto' }}>
+                            Une suite complète d'outils conçus pour moderniser l'expérience éducative de votre école.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2.5rem' }}>
+                        {features.map((feature, index) => (
+                            <div key={index} className="feature-card">
+                                <div style={{
+                                    width: '56px', height: '56px', borderRadius: '16px',
+                                    background: feature.bg, color: feature.color,
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <feature.icon size={28} />
+                                </div>
+                                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.75rem', color: '#111827' }}>
                                     {feature.title}
                                 </h3>
-                                <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.6 }}>
+                                <p style={{ color: '#4B5563', lineHeight: 1.6 }}>
                                     {feature.description}
                                 </p>
                             </div>
@@ -316,119 +398,78 @@ export default function LandingPage() {
             </section>
 
             {/* CTA Section */}
-            <section style={{
-                padding: '5rem 2rem',
-                backgroundColor: 'var(--color-surface)',
-                borderTop: '1px solid var(--color-border)'
-            }}>
-                <div className="container" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1.5rem', color: 'var(--color-text)' }}>
-                        Prêt à commencer ?
+            <section className="cta-section">
+                <div style={{ position: 'relative', zIndex: 10, maxWidth: '700px', margin: '0 auto' }}>
+                    <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1.5rem' }}>
+                        Prêt à transformer votre école ?
                     </h2>
-                    <p style={{ color: 'var(--color-text-muted)', marginBottom: '2.5rem', fontSize: '1.125rem' }}>
-                        Rejoignez des milliers d'écoles qui utilisent QCM App pour leurs examens.
+                    <p style={{ fontSize: '1.25rem', opacity: 0.9, marginBottom: '3rem', lineHeight: 1.6 }}>
+                        Rejoignez des centaines d'établissements qui font confiance à QCM App pour leurs évaluations.
                     </p>
                     <Button
-                        onClick={() => navigate('/login')}
-                        style={{ padding: '1rem 2.5rem', fontSize: '1.125rem', borderRadius: 'var(--radius-full)' }}
+                        onClick={() => navigate('/register')}
+                        style={{
+                            background: 'white',
+                            color: '#111827',
+                            padding: '1rem 3rem',
+                            fontSize: '1.125rem',
+                            borderRadius: '9999px',
+                            fontWeight: 700,
+                            border: 'none',
+                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2)'
+                        }}
                     >
-                        Accéder à la plateforme
+                        Créer un compte maintenant
                     </Button>
                 </div>
+
+                {/* Decorative background circles */}
+                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)', borderRadius: '50%', zIndex: 0 }}></div>
             </section>
 
-
             {/* Footer */}
-            <footer className="landing-footer">
-                <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                        gap: '3rem',
-                        marginBottom: '3rem'
-                    }}>
-                        {/* About Section */}
+            <footer style={{ background: '#111827', color: '#9CA3AF', padding: '5rem 2rem 2rem' }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem', marginBottom: '4rem' }}>
                         <div style={{ gridColumn: 'span 1' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
-                                <GraduationCap size={28} style={{ color: '#818CF8' }} />
-                                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'white', margin: 0 }}>QCM App</h3>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'white', fontWeight: 700, fontSize: '1.25rem', marginBottom: '1.5rem' }}>
+                                <GraduationCap /> QCM App
                             </div>
-                            <p style={{ fontSize: '0.95rem', lineHeight: 1.6, color: '#9CA3AF' }}>
-                                Plateforme moderne d'examens en ligne pour les établissements scolaires. Simple, rapide et sécurisée.
+                            <p style={{ lineHeight: 1.6 }}>
+                                La solution d'évaluation préférée des écoles modernes.
+                                Simple. Rapide. Sécurisée.
                             </p>
                         </div>
 
-                        {/* Quick Links */}
                         <div>
-                            <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1.25rem', color: 'white' }}>
-                                Liens Rapides
-                            </h4>
-                            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: 0 }}>
-                                <li>
-                                    <a href="/login" style={{ fontSize: '0.95rem', color: '#9CA3AF', transition: 'color 0.2s', textDecoration: 'none' }}
-                                        onMouseEnter={(e) => e.currentTarget.style.color = '#818CF8'}
-                                        onMouseLeave={(e) => e.currentTarget.style.color = '#9CA3AF'}>
-                                        Se connecter
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#features" style={{ fontSize: '0.95rem', color: '#9CA3AF', transition: 'color 0.2s', textDecoration: 'none' }}
-                                        onMouseEnter={(e) => e.currentTarget.style.color = '#818CF8'}
-                                        onMouseLeave={(e) => e.currentTarget.style.color = '#9CA3AF'}>
-                                        Fonctionnalités
-                                    </a>
-                                </li>
+                            <h4 style={{ color: 'white', fontWeight: 600, marginBottom: '1.5rem' }}>Produit</h4>
+                            <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                <li><a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Fonctionnalités</a></li>
+                                <li><a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Tarifs</a></li>
+                                <li><a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Sécurité</a></li>
                             </ul>
                         </div>
 
-                        {/* Support */}
                         <div>
-                            <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1.25rem', color: 'white' }}>
-                                Support
-                            </h4>
-                            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: 0 }}>
-                                <li style={{ fontSize: '0.95rem', color: '#9CA3AF', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    Email: support@qcmapp.com
-                                </li>
-                                <li style={{ fontSize: '0.95rem', color: '#9CA3AF', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    Tél: 77 232 70 57
-                                </li>
+                            <h4 style={{ color: 'white', fontWeight: 600, marginBottom: '1.5rem' }}>Ressources</h4>
+                            <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                <li><a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Documentation</a></li>
+                                <li><a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Guide Enseignant</a></li>
+                                <li><a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Support</a></li>
                             </ul>
                         </div>
 
-                        {/* Legal */}
                         <div>
-                            <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1.25rem', color: 'white' }}>
-                                Légal
-                            </h4>
-                            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: 0 }}>
-                                <li>
-                                    <a href="#" style={{ fontSize: '0.95rem', color: '#9CA3AF', transition: 'color 0.2s', textDecoration: 'none' }}
-                                        onMouseEnter={(e) => e.currentTarget.style.color = '#818CF8'}
-                                        onMouseLeave={(e) => e.currentTarget.style.color = '#9CA3AF'}>
-                                        Mentions légales
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" style={{ fontSize: '0.95rem', color: '#9CA3AF', transition: 'color 0.2s', textDecoration: 'none' }}
-                                        onMouseEnter={(e) => e.currentTarget.style.color = '#818CF8'}
-                                        onMouseLeave={(e) => e.currentTarget.style.color = '#9CA3AF'}>
-                                        Confidentialité
-                                    </a>
-                                </li>
+                            <h4 style={{ color: 'white', fontWeight: 600, marginBottom: '1.5rem' }}>Légal</h4>
+                            <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                <li><a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Confidentialité</a></li>
+                                <li><a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>CGU</a></li>
                             </ul>
                         </div>
                     </div>
 
-                    {/* Bottom Bar */}
-                    <div style={{
-                        borderTop: '1px solid #374151',
-                        paddingTop: '2rem',
-                        textAlign: 'center'
-                    }}>
-                        <p style={{ fontSize: '0.875rem', color: '#6B7280', margin: 0 }}>
-                            © 2026 QCM App. Tous droits réservés.
-                        </p>
+                    <div style={{ borderTop: '1px solid #374151', paddingTop: '2rem', textAlign: 'center', fontSize: '0.875rem' }}>
+                        &copy; 2026 QCM App. Tous droits réservés.
                     </div>
                 </div>
             </footer>

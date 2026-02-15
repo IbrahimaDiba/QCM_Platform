@@ -20,9 +20,11 @@ export default function QuizEditor() {
         description: '',
         targetClass: '',
         timeLimit: 20,
+        startTime: '',
+        endTime: '',
         establishmentId: null,
         questions: [
-            { id: Date.now(), text: '', options: [{ id: Date.now() + 1, text: '', isCorrect: false }, { id: Date.now() + 2, text: '', isCorrect: false }] }
+            { id: Date.now(), text: '', explanation: '', options: [{ id: Date.now() + 1, text: '', isCorrect: false }, { id: Date.now() + 2, text: '', isCorrect: false }] }
         ]
     });
 
@@ -54,10 +56,13 @@ export default function QuizEditor() {
                 description: quizData.description,
                 targetClass: quizData.target_class,
                 timeLimit: quizData.time_limit,
+                startTime: quizData.start_time ? quizData.start_time.slice(0, 16) : '',
+                endTime: quizData.end_time ? quizData.end_time.slice(0, 16) : '',
                 establishmentId: quizData.establishment_id,
                 questions: quizData.questions.map(q => ({
                     id: q.id,
                     text: q.text,
+                    explanation: q.explanation || '',
                     options: q.quiz_options.map(o => ({
                         id: o.id,
                         text: o.text,
@@ -101,6 +106,7 @@ export default function QuizEditor() {
             questions: [...quiz.questions, {
                 id: Date.now(),
                 text: '',
+                explanation: '',
                 options: [
                     { id: Date.now() + 1, text: '', isCorrect: false },
                     { id: Date.now() + 2, text: '', isCorrect: false }
@@ -172,6 +178,8 @@ export default function QuizEditor() {
                 title: quiz.title,
                 description: quiz.description,
                 time_limit: quiz.timeLimit,
+                start_time: quiz.startTime || null,
+                end_time: quiz.endTime || null,
                 target_class: quiz.targetClass,
                 establishment_id: schoolId,
                 status: 'Active'
@@ -195,7 +203,7 @@ export default function QuizEditor() {
             for (const q of quiz.questions) {
                 const { data: qData, error: qError } = await supabase
                     .from('questions')
-                    .insert([{ quiz_id: quizId, text: q.text }])
+                    .insert([{ quiz_id: quizId, text: q.text, explanation: q.explanation }])
                     .select()
                     .single();
 
@@ -507,6 +515,50 @@ export default function QuizEditor() {
                             <div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                                     <Clock size={16} style={{ color: 'var(--color-text-muted)' }} />
+                                    <label style={{ fontWeight: 600, color: 'var(--color-text)' }}>Date de début (Optionnel)</label>
+                                </div>
+                                <input
+                                    type="datetime-local"
+                                    value={quiz.startTime}
+                                    onChange={(e) => setQuiz({ ...quiz, startTime: e.target.value })}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.875rem',
+                                        borderRadius: 'var(--radius-lg)',
+                                        border: '2px solid var(--color-border)',
+                                        fontSize: '1rem',
+                                        transition: 'border-color 0.2s',
+                                        fontFamily: 'inherit'
+                                    }}
+                                    onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                                    onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}
+                                />
+                            </div>
+                            <div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                                    <Clock size={16} style={{ color: 'var(--color-text-muted)' }} />
+                                    <label style={{ fontWeight: 600, color: 'var(--color-text)' }}>Date de fin (Optionnel)</label>
+                                </div>
+                                <input
+                                    type="datetime-local"
+                                    value={quiz.endTime}
+                                    onChange={(e) => setQuiz({ ...quiz, endTime: e.target.value })}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.875rem',
+                                        borderRadius: 'var(--radius-lg)',
+                                        border: '2px solid var(--color-border)',
+                                        fontSize: '1rem',
+                                        transition: 'border-color 0.2s',
+                                        fontFamily: 'inherit'
+                                    }}
+                                    onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                                    onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}
+                                />
+                            </div>
+                            <div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                                    <Clock size={16} style={{ color: 'var(--color-text-muted)' }} />
                                     <label style={{ fontWeight: 600, color: 'var(--color-text)' }}>Durée (minutes) *</label>
                                 </div>
                                 <input
@@ -608,6 +660,29 @@ export default function QuizEditor() {
                                             fontSize: '1.05rem',
                                             fontWeight: 500,
                                             transition: 'border-color 0.2s'
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                                        onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}
+                                    />
+                                </div>
+
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, fontSize: '0.875rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                                        Explication / Commentaire (Apparaît lors de la correction)
+                                    </label>
+                                    <textarea
+                                        value={q.explanation}
+                                        onChange={(e) => handleQuestionChange(q.id, 'explanation', e.target.value)}
+                                        placeholder="Expliquez pourquoi la réponse est correcte ou donnez un conseil..."
+                                        rows={2}
+                                        style={{
+                                            width: '100%',
+                                            padding: '0.875rem',
+                                            borderRadius: 'var(--radius-lg)',
+                                            border: '2px solid var(--color-border)',
+                                            fontSize: '1rem',
+                                            transition: 'border-color 0.2s',
+                                            fontFamily: 'inherit'
                                         }}
                                         onFocus={(e) => e.target.style.borderColor = '#667eea'}
                                         onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}

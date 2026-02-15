@@ -130,6 +130,20 @@ export default function QuizResult() {
                                     <span>{q.text}</span>
                                 </h3>
 
+                                {q.explanation && !isCorrect && (
+                                    <div style={{
+                                        marginBottom: '1rem',
+                                        padding: '1rem',
+                                        backgroundColor: '#EFF6FF',
+                                        border: '1px solid #BFDBFE',
+                                        borderRadius: 'var(--radius-md)',
+                                        color: '#1E40AF',
+                                        fontSize: '0.95rem'
+                                    }}>
+                                        <strong>💡 Explication du prof :</strong> {q.explanation}
+                                    </div>
+                                )}
+
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                     {cleanOptions.map((option) => {
                                         const isSelected = userAnswerId === option.id;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSchools } from '../../contexts/SchoolContext';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
-import { Plus, Trash2, School, Building2, MapPin, Navigation } from 'lucide-react';
+import { Plus, Trash2, Navigation } from 'lucide-react';
 
 export default function SchoolManagement() {
     const { schools, addSchool, deleteSchool } = useSchools();
@@ -13,20 +13,28 @@ export default function SchoolManagement() {
         city: ''
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.name || !formData.city) {
             alert('Veuillez remplir au moins le nom et la ville');
             return;
         }
-        addSchool(formData);
-        setFormData({ name: '', address: '', city: '' });
-        setShowForm(false);
+        try {
+            await addSchool(formData);
+            setFormData({ name: '', address: '', city: '' });
+            setShowForm(false);
+        } catch (error) {
+            alert("Erreur lors de l'ajout de l'école. Veuillez réessayer.");
+        }
     };
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         if (confirm('Êtes-vous sûr de vouloir supprimer cette école ?')) {
-            deleteSchool(id);
+            try {
+                await deleteSchool(id);
+            } catch (error) {
+                alert("Impossible de supprimer cette école. Elle est peut-être liée à des utilisateurs.");
+            }
         }
     };
 
@@ -175,24 +183,10 @@ export default function SchoolManagement() {
                             {schools.map((school) => (
                                 <tr key={school.id}>
                                     <td style={{ fontWeight: 500 }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                            <div style={{
-                                                width: '32px', height: '32px',
-                                                borderRadius: 'var(--radius-sm)',
-                                                backgroundColor: '#EEF2FF',
-                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                                flexShrink: 0
-                                            }}>
-                                                <Building2 size={18} style={{ color: 'var(--color-primary)' }} />
-                                            </div>
-                                            {school.name}
-                                        </div>
+                                        {school.name}
                                     </td>
                                     <td style={{ color: 'var(--color-text-muted)' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                            <MapPin size={14} flexShrink={0} />
-                                            {school.address || '—'}
-                                        </div>
+                                        {school.address || '—'}
                                     </td>
                                     <td>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

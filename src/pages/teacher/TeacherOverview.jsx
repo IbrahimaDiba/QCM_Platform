@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
-import { BookOpen, CheckCircle, Clock, Plus, Users, TrendingUp, Calendar, ArrowRight, BarChart3, FileText, Award, AlertCircle, Eye, FileStack, Activity, UsersRound, GraduationCap, Trophy, ListChecks, ClipboardList } from 'lucide-react';
+import { BookOpen, CheckCircle, Clock, Plus, Users, TrendingUp, Calendar, ArrowRight, BarChart3, FileText, Award, AlertCircle, Eye, FileStack, Activity, UsersRound, GraduationCap, Trophy, ListChecks, ClipboardList, CheckCircle2, XCircle } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -568,17 +568,27 @@ export default function TeacherOverview() {
                                                 </span>
                                             </td>
                                             <td style={{ padding: '1.25rem 1.5rem', textAlign: 'center' }}>
-                                                <span style={{
-                                                    padding: '0.4rem 0.875rem',
-                                                    borderRadius: 'var(--radius-full)',
-                                                    fontSize: '0.75rem',
+                                                <div style={{
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.5rem',
+                                                    padding: '0.5rem 1rem',
+                                                    borderRadius: '9999px',
+                                                    fontSize: '0.875rem',
                                                     fontWeight: 600,
-                                                    backgroundColor: result.passed ? '#ECFDF5' : '#FEF2F2',
+                                                    background: result.passed
+                                                        ? 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)'
+                                                        : 'linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%)',
                                                     color: result.passed ? '#059669' : '#DC2626',
-                                                    textTransform: 'uppercase'
+                                                    border: `1px solid ${result.passed ? '#A7F3D0' : '#FECACA'}`
                                                 }}>
-                                                    {result.passed ? '✓ Réussi' : '✗ Échoué'}
-                                                </span>
+                                                    {result.passed ? (
+                                                        <CheckCircle2 size={16} strokeWidth={2.5} />
+                                                    ) : (
+                                                        <XCircle size={16} strokeWidth={2.5} />
+                                                    )}
+                                                    <span>{result.passed ? 'Réussi' : 'Échoué'}</span>
+                                                </div>
                                             </td>
                                             <td style={{ padding: '1.25rem 1.5rem', textAlign: 'right', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
                                                 {result.date}

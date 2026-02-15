@@ -21,7 +21,6 @@ export default function DashboardLayout({ role }) {
             { icon: BarChart3, label: 'Tableau de bord', path: '/teacher' },
             { icon: GraduationCap, label: 'Mes Examens', path: '/teacher/quizzes' },
             { icon: ClipboardList, label: 'Résultats', path: '/teacher/results' },
-            { icon: Settings, label: 'Paramètres', path: '/teacher/settings' },
             { icon: BookOpenCheck, label: 'Centre d\'Aide', path: '/teacher/help' },
         ],
         student: [

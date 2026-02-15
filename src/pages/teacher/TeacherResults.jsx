@@ -128,7 +128,7 @@ export default function TeacherResults() {
 
         // Quiz filter
         if (filterQuiz !== 'all') {
-            filtered = filtered.filter(r => r.quizId === filterQuiz);
+            filtered = filtered.filter(r => String(r.quizId) === String(filterQuiz));
         }
 
         // Status filter
